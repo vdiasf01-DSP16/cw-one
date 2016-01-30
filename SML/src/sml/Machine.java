@@ -2,25 +2,32 @@ package sml;
 
 import java.util.ArrayList;
 
-/*
- * The machine language interpreter
+/**
+ * The machine language interpreter.
  */
 public class Machine {
-    // The labels in the SML program, in the order in which
-    // they appear (are defined) in the program
 
+	/**
+	 * The labels in the SML program, in the order in which
+     * they appear (are defined) in the program.
+     */
     private Labels labels;
 
-    // The SML program, consisting of prog.size() instructions, each
-    // of class Instruction (or one of its subclasses)
+    /**
+     * The SML program, consisting of prog.size() instructions, each
+     * of class Instruction (or one of its subclasses).
+     */
     private ArrayList<Instruction> prog;
 
-    // The registers of the SML machine
+    /**
+     * The registers of the SML machine.
+     */ 
     private Registers registers;
 
-    // The program counter; it contains the index (in prog) of
-    // the next instruction to be executed.
-
+    /**
+     * The program counter; it contains the index (in prog) of
+     * the next instruction to be executed.
+     */
     private int pc;
 
     {
@@ -29,9 +36,17 @@ public class Machine {
         pc = 0;
     }
 
+    /**
+     * The Machine constructor.
+     */
     public Machine() {
     }
 
+    /**
+     * The Main. 
+     * 
+     * @param args
+     */
     public static void main(String[] args) {
 
         if (args.length != 1) {
@@ -54,8 +69,9 @@ public class Machine {
         System.out.println(m.getRegisters() + ".");
     }
 
-    // Print the program
-
+    /**
+     * Print the program.
+     */
     @Override
     public String toString() {
         StringBuffer s = new StringBuffer();
@@ -64,9 +80,10 @@ public class Machine {
         return s.toString();
     }
 
-    // Execute the program in prog, beginning at instruction 0.
-    // Precondition: the program and its labels have been store properly.
-
+    /**
+     * Execute the program in prog, beginning at instruction 0.
+     * Precondition: the program and its labels have been store properly.
+     */
     public void execute() {
         setPc(0);
         setRegisters(new Registers());
@@ -77,34 +94,74 @@ public class Machine {
         }
     }
 
+    /**
+     * The labels.
+     *  
+     * @return Labels
+     */
     public Labels getLabels() {
         return this.labels;
     }
 
+    /**
+     * The Program list of instructions.
+     * 
+     * @return Instruction ArrayList 
+     */
     public ArrayList<Instruction> getProg() {
         return this.prog;
     }
 
+    /**
+     * The registers.
+     * 
+     * @return Registers
+     */
     public Registers getRegisters() {
         return this.registers;
     }
 
+    /**
+     * The program counter.
+     * 
+     * @return Integer
+     */
     public int getPc() {
         return this.pc;
     }
 
+    /**
+     * Set Labels.
+     * 
+     * @param labels
+     */
     public void setLabels(Labels labels) {
         this.labels = labels;
     }
 
+    /**
+     * Set program list of instructions.
+     * 
+     * @param Instruction ArrayList
+     */
     public void setProg(ArrayList<Instruction> prog) {
         this.prog = prog;
     }
 
+    /**
+     * Set the registers.
+     * 
+     * @param Registers
+     */
     public void setRegisters(Registers registers) {
         this.registers = registers;
     }
 
+    /**
+     * Set the program counter.
+     * 
+     * @param Integer
+     */
     public void setPc(int pc) {
         this.pc = pc;
     }
