@@ -1,15 +1,15 @@
 package sml;
 
 /**
- * This class executes the instruction of multiplying values 
+ * This class executes the instruction of dividing values 
  * of two registers into the first supplied register.
  * 
- * e.g.: 'Label' 'mul' 'R1' 'R2' 'R3'
- *       R1 = R2 * R3
+ * e.g.: 'Label' 'div' 'R1' 'R2' 'R3'
+ *       R1 = R2 / R3
  * 
  * @author someone
  */
-public class MulInstruction extends Instruction {
+public class DivInstruction extends Instruction {
 
 	/**
 	 * The result of the instruction.
@@ -32,7 +32,7 @@ public class MulInstruction extends Instruction {
      * @param String label
      * @param String op
      */
-    public MulInstruction(String label, String op) {
+    public DivInstruction(String label, String op) {
         super(label, op);
     }
 
@@ -44,8 +44,8 @@ public class MulInstruction extends Instruction {
      * @param Integer op1
      * @param Integer op2
      */
-    public MulInstruction(String label, int result, int op1, int op2) {
-        this(label, "mul");
+    public DivInstruction(String label, int result, int op1, int op2) {
+        this(label, "div");
         this.result = result;
         this.op1 = op1;
         this.op2 = op2;
@@ -60,8 +60,9 @@ public class MulInstruction extends Instruction {
     public void execute(Machine m) {
         int value1 = m.getRegisters().getRegister(op1);
         int value2 = m.getRegisters().getRegister(op2);
-        // The multiplication core operation.
-        m.getRegisters().setRegister(result, value1 * value2);
+        if ( value2 == 0 ) throw new ArithmeticException("Illegal devision by zero");
+        // The division core operation.
+        m.getRegisters().setRegister(result, value1 / value2);
     }
 
     @Override
