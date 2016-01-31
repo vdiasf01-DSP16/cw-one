@@ -13,7 +13,9 @@ import sml.AddInstruction;
 import sml.Instruction;
 import sml.LinInstruction;
 import sml.Machine;
+import sml.MulInstruction;
 import sml.Registers;
+import sml.SubInstruction;
 
 /**
  * JUnit tests for instruction lin
@@ -51,8 +53,8 @@ public class TestInstruction {
 	@Test
 	public void testLinInstruction() {
 		// Execute instructions
-		execute(new LinInstruction("test", 1, 2));
-		execute(new LinInstruction("test", 0, 3));
+		execute(new LinInstruction("lin", 1, 2));
+		execute(new LinInstruction("lin", 0, 3));
 
 		// Set the expected values.
 		Registers expectedRegisters = new Registers();
@@ -70,10 +72,11 @@ public class TestInstruction {
 	public void testAddInstruction() {
 		foundRegisters.setRegister(1, 10);
 		foundRegisters.setRegister(2, -7);
+
 		// Execute instructions
-		execute(new AddInstruction("test", 0, 1, 2));
-		execute(new AddInstruction("test", 0, 0, 1));
-		execute(new AddInstruction("test", 10, 10, 10));
+		execute(new AddInstruction("add", 0, 1, 2));
+		execute(new AddInstruction("add", 0, 0, 1));
+		execute(new AddInstruction("add", 10, 10, 10));
 
 		// Set the expected values.
 		Registers expectedRegisters = new Registers();
@@ -92,15 +95,16 @@ public class TestInstruction {
 	public void testSubInstruction() {
 		foundRegisters.setRegister(1, 10);
 		foundRegisters.setRegister(2, -7);
+
 		// Execute instructions
-		execute(new SubInstruction("test", 0, 1, 2));
-		execute(new SubInstruction("test", 0, 0, 1));
-		execute(new SubInstruction("test", 10, 1, 1));
+		execute(new SubInstruction("sub", 0, 1, 2));
+		execute(new SubInstruction("sub", 0, 0, 1));
+		execute(new SubInstruction("sub", 10, 1, 1));
 
 		// Set the expected values.
 		Registers expectedRegisters = new Registers();
-		expectedRegisters.setRegister(0, -7);
-		expectedRegisters.setRegister(1, -7);
+		expectedRegisters.setRegister(0, 7); // 10 + 7 = 17 - 10
+		expectedRegisters.setRegister(1, 10); 
 		expectedRegisters.setRegister(2, -7);
 
 		// Verify if all registers match
@@ -114,10 +118,11 @@ public class TestInstruction {
 	public void testMulInstruction() {
 		foundRegisters.setRegister(1, 10);
 		foundRegisters.setRegister(2, -7);
+
 		// Execute instructions
-		execute(new MulInstruction("test", 0, 1, 2));
-		execute(new MulInstruction("test", 0, 0, 1));
-		execute(new MulInstruction("test", 5, 1, 3));
+		execute(new MulInstruction("mul", 0, 1, 2));
+		execute(new MulInstruction("mul", 0, 0, 1));
+		execute(new MulInstruction("mul", 5, 1, 3));
 
 		// Set the expected values.
 		Registers expectedRegisters = new Registers();
