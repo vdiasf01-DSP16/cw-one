@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-/*
+/**
  * The translator of a <b>S</b><b>M</b>al<b>L</b> program.
  */
 public class Translator {
@@ -20,13 +20,19 @@ public class Translator {
     private ArrayList<Instruction> program; // The program to be created
     private String fileName; // source file of SML code
 
+    /**
+     * Constructor.
+     * 
+     * @param fileName
+     */
     public Translator(String fileName) {
         this.fileName = PATH + fileName;
     }
 
-    // translate the small program in the file into lab (the labels) and
-    // prog (the program)
-    // return "no errors were detected"
+    /**
+     * Translate the small program in the file into lab (the labels) and
+     * prog (the program) return "no errors were detected"
+     */
     public boolean readAndTranslate(Labels lab, ArrayList<Instruction> prog) {
 
         try (Scanner sc = new Scanner(new File(fileName))) {
@@ -69,9 +75,14 @@ public class Translator {
         return true;
     }
 
-    // line should consist of an MML instruction, with its label already
-    // removed. Translate line into an instruction with label label
-    // and return the instruction
+    /**
+     * Line should consist of an MML instruction, with its label already
+     * removed. Translate line into an instruction with label label
+     * and return the instruction.
+     * 
+     * @param String label 
+     * @return Instruction
+     */
     public Instruction getInstruction(String label) {
         int s1; // Possible operands of the instruction
         int s2;
@@ -82,6 +93,7 @@ public class Translator {
             return null;
 
         String ins = scan();
+        // TODO: Remove instruction dependency
         switch (ins) {
             case "add":
                 r = scanInt();
@@ -99,9 +111,11 @@ public class Translator {
         return null;
     }
 
-    /*
+    /**
      * Return the first word of line and remove it from line. If there is no
      * word, return ""
+     * 
+     * @return String
      */
     private String scan() {
         line = line.trim();
@@ -117,8 +131,12 @@ public class Translator {
         return word;
     }
 
-    // Return the first word of line as an integer. If there is
-    // any error, return the maximum int
+    /**
+     * Return the first word of line as an integer. 
+     * If there is any error, return the maximum int
+     * 
+     * @return Integer
+     */
     private int scanInt() {
         String word = scan();
         if (word.length() == 0) {

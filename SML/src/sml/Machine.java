@@ -30,16 +30,13 @@ public class Machine {
      */
     private int pc;
 
-    {
-        labels = new Labels();
-        prog = new ArrayList<>();
-        pc = 0;
-    }
-
     /**
      * The Machine constructor.
      */
     public Machine() {
+        labels = new Labels();
+        prog = new ArrayList<>();
+        pc = 0;
     }
 
     /**
@@ -49,6 +46,7 @@ public class Machine {
      */
     public static void main(String[] args) {
 
+    	// Validate arguments
         if (args.length != 1) {
             System.err.println("Incorrect number of arguments - Machine <file> - required");
             System.exit(-1);
@@ -82,7 +80,7 @@ public class Machine {
 
     /**
      * Execute the program in prog, beginning at instruction 0.
-     * Precondition: the program and its labels have been store properly.
+     * Precondition: the program and its labels have been stored properly.
      */
     public void execute() {
         setPc(0);
@@ -166,6 +164,9 @@ public class Machine {
         this.pc = pc;
     }
 
+    /**
+     * Check if passed Object is an instance of Machine
+     */
     @Override
     public boolean equals(Object o) {
         if (o == this) return true;

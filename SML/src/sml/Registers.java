@@ -1,45 +1,68 @@
 package sml;
 
 /**
- * This class ....
- * <p>
- * An instance contains 32 registers and methods to access and change them
+ * This class manages all Machine registers.
+ * 
+ * An instance contains 32 registers and methods to access and change them.
  *
  * @author someone
  */
-
 public class Registers {
 
-    private final static int NUMBEROFREGISTERS = 32;
-    private int registers[];
+	/**
+	 * The total number of registers.
+	 */
+    private final static int TOTAL_NUMBER_OF_REGISTERS = 32;
+    
+    /**
+     * The list of registers.
+     */
+    private int registers[] = new int[TOTAL_NUMBER_OF_REGISTERS];
 
-    // Constructor: an instance whose registers are set to 0
-
-    {
-        registers = new int[NUMBEROFREGISTERS];
-    }
-
+    /**
+     * Constructor.
+     */
     public Registers() {
+    	// Resetting all registers to zero
         for (int i = 0; i != registers.length; i++) {
             registers[i] = 0;
         }
     }
 
-    // Set register i to v.
-    // Precondition: 0 <= i <= NUMBEROFREGISTERS
-
-    public void setRegister(int i, int v) {
-        registers[i] = v;
+    /**
+     * Setting a register with a value.
+     * 
+     * @param registerNumber
+     * @param value
+     */
+    public void setRegister(int registerNumber, int value) {
+        registers[registerNumber] = value;
     }
 
-    public int getRegister(int i) {
-        return registers[i];
+    /**
+     * The value in register.
+     * 
+     * @param registerNumber
+     * @return Integer
+     */
+    public int getRegister(int registerNumber) {
+        return registers[registerNumber];
     }
 
+    /**
+     * The list of all registers.
+     * 
+     * @return Integer[]
+     */
     public int[] getRegisters() {
         return this.registers;
     }
 
+    /**
+     * Setting all registers.
+     * 
+     * @param registers
+     */
     public void setRegisters(int[] registers) {
         this.registers = registers;
     }

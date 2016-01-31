@@ -28,6 +28,6 @@ public class LinInstruction extends Instruction {
 
     @Override
     public String toString() {
-        return super.toString() + " register " + register + " value is " + value;
+        return super.toString() + " R" + register + " = " + value;
     }
 }
