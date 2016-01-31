@@ -73,6 +73,7 @@ public class TestInstruction {
 		// Execute instructions
 		execute(new AddInstruction("test", 0, 1, 2));
 		execute(new AddInstruction("test", 0, 0, 1));
+		execute(new AddInstruction("test", 10, 10, 10));
 
 		// Set the expected values.
 		Registers expectedRegisters = new Registers();
@@ -84,6 +85,49 @@ public class TestInstruction {
 		verifyRegisters(expectedRegisters, machineMock.getRegisters());
 	}
 
+	/**
+	 * Testing sub Instruction.
+	 */
+	@Test
+	public void testSubInstruction() {
+		foundRegisters.setRegister(1, 10);
+		foundRegisters.setRegister(2, -7);
+		// Execute instructions
+		execute(new SubInstruction("test", 0, 1, 2));
+		execute(new SubInstruction("test", 0, 0, 1));
+		execute(new SubInstruction("test", 10, 1, 1));
+
+		// Set the expected values.
+		Registers expectedRegisters = new Registers();
+		expectedRegisters.setRegister(0, -7);
+		expectedRegisters.setRegister(1, -7);
+		expectedRegisters.setRegister(2, -7);
+
+		// Verify if all registers match
+		verifyRegisters(expectedRegisters, machineMock.getRegisters());
+	}
+
+	/**
+	 * Testing mul Instruction.
+	 */
+	@Test
+	public void testMulInstruction() {
+		foundRegisters.setRegister(1, 10);
+		foundRegisters.setRegister(2, -7);
+		// Execute instructions
+		execute(new MulInstruction("test", 0, 1, 2));
+		execute(new MulInstruction("test", 0, 0, 1));
+		execute(new MulInstruction("test", 5, 1, 3));
+
+		// Set the expected values.
+		Registers expectedRegisters = new Registers();
+		expectedRegisters.setRegister(0, -700);
+		expectedRegisters.setRegister(1, 10);
+		expectedRegisters.setRegister(2, -7);
+
+		// Verify if all registers match
+		verifyRegisters(expectedRegisters, machineMock.getRegisters());
+	}
 	
 	/**
 	 * Execute given instruction.
