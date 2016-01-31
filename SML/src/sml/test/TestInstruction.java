@@ -6,11 +6,14 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.*;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import sml.AddInstruction;
+import sml.BnzInstruction;
 import sml.DivInstruction;
 import sml.Instruction;
+import sml.Labels;
 import sml.LinInstruction;
 import sml.Machine;
 import sml.MulInstruction;
@@ -189,6 +192,54 @@ public class TestInstruction {
 		Mockito.verify(machineMock, Mockito.times(1)).getRegisters();
 		// Verify that the getRegister(1) was called
 		Mockito.verify(foundRegisters, Mockito.times(1)).getRegister(1);
+	}
+	
+	/**
+	 * Testing bnz Instruction when not zero.
+	 */
+	@Test
+	public void testBnzInstruction() {
+		// Set some labels
+		Labels labels = new Labels();
+		labels.addLabel("f0"); // PC 0
+		labels.addLabel("f1"); // PC 1
+		labels.addLabel("f2"); // PC 2
+
+		foundRegisters.setRegister(1, 10);
+
+		Mockito.when(machineMock.getLabels()).thenReturn(labels);
+		Mockito.when(machineMock.getRegisters()).thenReturn(foundRegisters);
+		Mockito.when(machineMock.getPc()).thenReturn(3);
+
+		// Execute bnz instruction
+		execute(new BnzInstruction("f3", 1, "f1"));
+
+		// We expect the PC to have been set to 
+		Mockito.verify(machineMock).setPc(Mockito.eq(1));
+	}
+	
+	/**
+	 * Testing bnz Instruction when zero.
+	 */
+	@Test
+	public void testBnzInstructionZero() {
+		// Set some labels
+		Labels labels = new Labels();
+		labels.addLabel("f0"); // PC 0
+		labels.addLabel("f1"); // PC 1
+		labels.addLabel("f2"); // PC 2
+
+		foundRegisters.setRegister(1, 0);
+
+		Mockito.when(machineMock.getLabels()).thenReturn(labels);
+		Mockito.when(machineMock.getRegisters()).thenReturn(foundRegisters);
+		Mockito.when(machineMock.getPc()).thenReturn(3);
+
+		// Execute bnz instruction
+		execute(new BnzInstruction("f3", 1, "f1"));
+
+		// We expect the PC to have been set to 
+		Mockito.verify(machineMock).setPc(Mockito.eq(4));
 	}
 	
 	/**

@@ -37,7 +37,7 @@ public class OutInstruction extends Instruction {
      * @param Integer result
      */
     public OutInstruction(String label, int register) {
-        this(label, "div");
+        this(label, "out");
         this.register = register;
     }
 
