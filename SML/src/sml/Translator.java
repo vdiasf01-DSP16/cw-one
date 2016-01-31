@@ -11,7 +11,11 @@ import java.util.Scanner;
  */
 public class Translator {
 
+	/**
+	 * The static path for where all program files are to be found.
+	 */
     private static final String PATH = "/Users/Vasco/Desktop/SDPcwone/cwone/SML/src/";
+
     // word + line is the part of the current line that's not yet processed
     // word has no whitespace
     // If word and line are not empty, line begins with whitespace

@@ -6,6 +6,7 @@ package sml;
  * @author someone
  */
 public abstract class Instruction {
+
 	/**
 	 * The instruction label.
 	 */
