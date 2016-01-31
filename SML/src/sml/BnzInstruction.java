@@ -56,15 +56,15 @@ public class BnzInstruction extends Instruction {
         int newPc  = m.getLabels().indexOf(op2);
         
         // Set the pc into the new found value if op1 is not zero.
-        if ( value1 != 0 ) {
+        if ( value1 != 0 ) { 
         	m.setPc(newPc);
-        } else { 
-        	m.setPc(1 + m.getPc());
+        } else {
+        	// Let the program continue otherwise...
         }
     }
 
     @Override
     public String toString() {
-        return super.toString() + " R" + op1 + " !=0 ? L" + op2 + " : continue";
+        return super.toString() + " R" + op1 + " " + op2;
     }
 }

@@ -55,6 +55,6 @@ public class OutInstruction extends Instruction {
 
     @Override
     public String toString() {
-        return super.toString() + " R" + result + " = " + result;
+        return super.toString() + " R[" + register + "] = " + result;
     }
 }

@@ -238,8 +238,8 @@ public class TestInstruction {
 		// Execute bnz instruction
 		execute(new BnzInstruction("f3", 1, "f1"));
 
-		// We expect the PC to have been set to 
-		Mockito.verify(machineMock).setPc(Mockito.eq(4));
+		// We expect the PC to have been set to 3 
+		assertEquals(machineMock.getPc(),3);
 	}
 	
 	/**
