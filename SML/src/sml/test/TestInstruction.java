@@ -6,8 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 
 import sml.AddInstruction;
 import sml.DivInstruction;
@@ -15,6 +14,7 @@ import sml.Instruction;
 import sml.LinInstruction;
 import sml.Machine;
 import sml.MulInstruction;
+import sml.OutInstruction;
 import sml.Registers;
 import sml.SubInstruction;
 
@@ -168,6 +168,27 @@ public class TestInstruction {
 
 		// Execute div by zero instruction for exception
 		execute(new DivInstruction("div", 0, 1, 2));
+	}
+	
+	/**
+	 * Testing out Instruction.
+	 */
+	@Test
+	public void testOutInstruction() {
+		// Mock the found register for this
+		foundRegisters = Mockito.mock(Registers.class);
+		// Ensure we return the value of the register when called
+		Mockito.when(foundRegisters.getRegister(1)).thenReturn(10);
+		// Ensure we return the foundRegisters when requested
+		Mockito.when(machineMock.getRegisters()).thenReturn(foundRegisters);
+
+		// Execute out instruction
+		execute(new OutInstruction("out", 1));
+
+		// Verify that the getRegisters() was called
+		Mockito.verify(machineMock, Mockito.times(1)).getRegisters();
+		// Verify that the getRegister(1) was called
+		Mockito.verify(foundRegisters, Mockito.times(1)).getRegister(1);
 	}
 	
 	/**
