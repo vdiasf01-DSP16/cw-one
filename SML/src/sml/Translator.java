@@ -2,6 +2,9 @@ package sml;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -88,48 +91,69 @@ public class Translator {
      * @return Instruction
      */
     public Instruction getInstruction(String label) {
-        int s1; // Possible operands of the instruction
-        int s2;
-        int r;
 
         if (line.equals(""))
             return null;
 
         String ins = scan();
-        // TODO: Remove instruction dependency
-        switch (ins) {
-            case "add":
-                r = scanInt();
-                s1 = scanInt();
-                s2 = scanInt();
-                return new AddInstruction(label, r, s1, s2);
-            case "lin":
-                r = scanInt();
-                s1 = scanInt();
-                return new LinInstruction(label, r, s1);
-            case "mul":
-            	r = scanInt();
-            	s1 = scanInt();
-            	s2 = scanInt();
-            	return new MulInstruction(label, r, s1, s2);
-            case "sub":
-            	r = scanInt();
-            	s1 = scanInt();
-            	s2 = scanInt();
-            	return new SubInstruction(label, r, s1, s2);
-            case "div":
-            	r = scanInt();
-            	s1 = scanInt();
-            	s2 = scanInt();
-            	return new DivInstruction(label, r, s1, s2);
-            case "out":
-            	r = scanInt();
-            	return new OutInstruction(label, r);
-            case "bnz":
-            	r = scanInt();
-            	String str = scan();
-            	return new BnzInstruction(label, r, str);
+        
+        // Building the Instruction class name from the instruction.
+        String className = "sml." + ins.substring(0, 1).toUpperCase()
+    			+ ins.substring(1).toLowerCase() + "Instruction";
+
+        // Get the class for the found name.
+    	Class<?> subclass = null;
+		try {
+			subclass = Class.forName(className);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		// Get the constructors.
+    	Constructor<?>[] cc = subclass.getConstructors();
+    	Constructor<?> constructor = null;
+    	int maxParams = 0;
+    	for( Constructor<?> c : cc ) {
+    		int parameterCount = c.getParameterCount();
+    		if ( maxParams < parameterCount) {
+    			constructor = c;
+    			maxParams = parameterCount;
+    		}
+    	}
+    	
+        Class<?> parameterTypes[] = constructor.getParameterTypes();
+        Object[] parameterList = new Object[parameterTypes.length];
+
+        // First parameter is the instruction.
+        parameterList[0] = new String(ins);
+        
+        // Starting from second parameter, get constructor values.
+        for(int index = 1; index < parameterTypes.length; index++) {
+        	Type t = parameterTypes[index];
+        	switch(t.getTypeName()) {
+            	case "int":
+            		parameterList[index] = new Integer(scanInt());
+            		break;
+            	case "java.lang.String":
+            		parameterList[index] = new String(scan());
+            		break;
+                default: 
+                	throw new IllegalArgumentException(
+                			"Illegal Type: '"+t.getTypeName()+"'");
+        	}
         }
+
+        try {
+			return (Instruction) constructor.newInstance(parameterList);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
 
         return null;
     }
