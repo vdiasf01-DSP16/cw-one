@@ -61,6 +61,9 @@ public class Translator {
                 String label = scan();
 
                 if (label.length() > 0) {
+                	// Check if label has not been already added
+                	if ( this.labels.indexOf(label) != -1 )
+                		throw new IllegalArgumentException("ERROR @ line "+(program.size()+1)+": cannot reuse label '"+label+"'.");
                     Instruction ins = getInstruction(label);
                     if (ins != null) {
                         labels.addLabel(label);
@@ -92,7 +95,7 @@ public class Translator {
      */
     public Instruction getInstruction(String label) {
 
-        if (line.equals(""))
+    	if (line.equals(""))
             return null;
 
         String ins = scan();
@@ -108,7 +111,7 @@ public class Translator {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		
+
 		// Get the constructors.
     	Constructor<?>[] cc = subclass.getConstructors();
     	Constructor<?> constructor = null;
@@ -120,7 +123,7 @@ public class Translator {
     			maxParams = parameterCount;
     		}
     	}
-    	
+
         Class<?> parameterTypes[] = constructor.getParameterTypes();
         Object[] parameterList = new Object[parameterTypes.length];
 

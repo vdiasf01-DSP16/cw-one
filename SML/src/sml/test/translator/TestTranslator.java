@@ -1,7 +1,20 @@
 package sml.test.translator;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+
 import org.junit.Test;
 
+import sml.BnzInstruction;
+import sml.Instruction;
+import sml.Labels;
+import sml.LinInstruction;
+import sml.MulInstruction;
+import sml.OutInstruction;
+import sml.SubInstruction;
 import sml.Translator;
 
 /**
@@ -41,6 +54,11 @@ public class TestTranslator extends CommonTestTranslator {
 	 * Unknown instruction.
 	 */
 	private final String TEST_04 = "TestSameLabel04.sml";
+
+	/**
+	 * Load complete set of instructions and check labels.
+	 */
+	private final String TEST_05 = "TestLabels00.sml";
 
     /**
      * Constructor for common tests.
@@ -92,5 +110,58 @@ public class TestTranslator extends CommonTestTranslator {
 	public void testTranslator04() {
 		translatorHandler = new Translator(PATH+TEST_04);
 		translatorHandler.readAndTranslate(labels, prog);
+	}
+
+	/**
+	 * Testing if labels were all loaded.
+	 */
+	@Test
+	public void testTranslator05() {
+		translatorHandler = new Translator(PATH+TEST_05);
+		translatorHandler.readAndTranslate(labels, prog);
+		String[] expectedLabels = {"f0", "f1", "f2", "f3", "f4", "f5", "f6"};
+		verifyLabels(expectedLabels, labels);
+		ArrayList<Instruction> expectedProg = new ArrayList<>();
+		expectedProg.add(new LinInstruction("lin", 0, 6)); // f0 lin 0 6
+		expectedProg.add(new LinInstruction("lin", 0, 6)); // f1 lin 1 1
+		expectedProg.add(new LinInstruction("lin", 0, 6)); // f2 lin 2 1
+		expectedProg.add(new MulInstruction("mul", 1, 1, 0)); // f3 mul 1 1 0
+		expectedProg.add(new SubInstruction("sub", 0, 0, 2)); // f4 sub 0 0 2
+		expectedProg.add(new BnzInstruction("bnz", 0, "f3")); // f5 bnz 0 f3
+		expectedProg.add(new OutInstruction("lin", 1)); // f6 out 1
+		verifyProgram(expectedProg, prog);
+	}
+
+	/**
+	 * Verify expected and found Instruction list contain same amount of
+	 * Instructions and in the same order.
+	 * 
+	 * @param expectedProg ArrayList[Instruction]
+	 * @param foundProgram ArrayList[Instruction]
+	 */
+	private void verifyProgram(ArrayList<Instruction> expectedProg, ArrayList<Instruction> foundProgram) {
+		assertNotNull(foundProgram);
+		assertEquals(expectedProg.size(), foundProgram.size());
+
+		for( int index = 0; index < expectedProg.size(); index++ ) {
+			assertEquals(expectedProg.get(index).getClass(), 
+					     foundProgram.get(index).getClass());
+		}
+	}
+
+	/**
+	 * Check if all labels were added in the correct order.
+	 * 
+	 * @param expected String[]
+	 * @param found Labels
+	 */
+	private void verifyLabels(String[] expected, Labels found) {
+		assertNotNull(found);
+		int line = 0;
+		for( String label : expected ) {
+			assertTrue(found.indexOf(label) != -1);
+			assertEquals(line, found.indexOf(label));
+			line++;
+		}
 	}
 }
