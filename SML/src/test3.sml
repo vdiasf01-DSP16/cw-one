@@ -4,4 +4,4 @@ f2 lin 2 1
 f3 mul 1 1 0
 f10 sub 0 0 2
 f5 bnz 0 f3
-f3 out 1
+f30 out 1
